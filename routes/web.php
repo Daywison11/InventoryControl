@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CadastroItem;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,4 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {return view('welcome');});
-Route::get('/teste', function () { $teste = ['teste1', 'teste1', 'teste1'  ]; return $teste;});
+
+
+
+// Route::get('/inseriritem', [CadastroItem::class, 'Create'])->name('Create');
+// Route::get('/teste', function () { $teste = ['teste1', 'teste1', 'teste1'  ]; return $teste;});

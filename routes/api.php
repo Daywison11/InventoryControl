@@ -1,5 +1,5 @@
 <?php
-
+use \App\Http\Controllers\Api\ItensController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,3 +17,12 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// ITENS
+// GET / Itens
+// POST / Itens
+// PUT / Itens / :id
+// PATCH / Itens / :id
+// DEKETE / Itens / :id
+Route::apiResource('itens', \App\Http\Controllers\Api\ItensController::class);
+Route::POST('/itens/namesearch', [ItensController::class, 'searchName'])->name('search-Name');
