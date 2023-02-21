@@ -25,4 +25,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // PATCH / Itens / :id
 // DEKETE / Itens / :id
 Route::apiResource('itens', \App\Http\Controllers\Api\ItensController::class);
-Route::POST('/itens/namesearch', [ItensController::class, 'searchName'])->name('search-Name');
+Route::POST('/itens/nomesearch', [ItensController::class, 'searchName'])->name('search-Nome');
+Route::POST('/itens/tiposearch', [ItensController::class, 'searchTipo'])->name('search-Tipo');
+Route::POST('/itens/codigosearch', [ItensController::class, 'searchCodigo'])->name('search-Codigo');

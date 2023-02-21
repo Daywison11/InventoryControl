@@ -7,6 +7,8 @@ use App\Models\Itens;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
+use Illuminate\Support\Facades\DB;
+
 class ItensController extends Controller
 {
     /**
@@ -78,7 +80,29 @@ class ItensController extends Controller
             return json_encode(false);
         }
     }
+    //faz select no banco por nome
     public function searchName(Request $request)
     {
+        $item = Itens::where('nome', 'LIKE', "{$request->nome}%")->get();
+
+        return $item;
     }
+
+    //faz select no banco por tipo
+    public function searchTipo(Request $request)
+    {
+        $item = Itens::where('tipo', 'LIKE', "{$request->tipo}%")->get();
+
+        return $item;
+    }
+
+    //faz select no banco por codigo.
+    public function searchCodigo(Request $request)
+    {
+        $item = Itens::where('codigo', '=', "{$request->codigo}")->get();
+
+        return $item;
+    }
+
+
 }
