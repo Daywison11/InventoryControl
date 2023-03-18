@@ -13,7 +13,7 @@ class Itens extends Model
 
     protected $fillable = ['codigo', 'nome', 'tipo', 'valor-un-compra', 'valor-un-venda', 'estoque-gerado', 'estoque-disponivel', 'entradas', 'saidas', 'perca'];
 
-    public function Item(){
-        return $this->hasMany(itens::class);
+    public function Token(){
+        return $this->belongsTo(Token::class);
     }
 }

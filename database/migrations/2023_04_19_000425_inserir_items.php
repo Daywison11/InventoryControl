@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('Items', function (Blueprint $table) {
+        Schema::create('items', function (Blueprint $table) {
             $table->id();
             $table->string('codigo');
             $table->string('nome');
@@ -23,7 +23,13 @@ return new class extends Migration
             $table->bigInteger('entradas');
             $table->bigInteger('saidas');
             $table->bigInteger('perca');
+            $table->unsignedBigInteger('token_id');
             $table->timestamps();
+
+            $table->foreign('token_id')
+                ->references('id')
+                ->on('tokens')
+                ->onDelete('cascade');
         });
     }
 
@@ -32,6 +38,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('items');
     }
 };
