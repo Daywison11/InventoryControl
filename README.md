@@ -1,5 +1,13 @@
 <h1>Endpoints</h1>
 
+<h3><strong>GET</strong> api/gerar-token</h3>
+<p>Gera o token que sera a indentidade do usuario.</p>
+<h4>Parametros obrigatorios</h4>
+<ul>
+<li>nome</li>
+<li>email</li>
+</ul>
+
 <h3><strong>GET</strong> api/itens</h3>
 <p>Retorna todos os itens</p>
 

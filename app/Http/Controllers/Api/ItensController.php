@@ -18,10 +18,13 @@ class ItensController extends Controller
      */
     private $itens;
 
-    public function __construct(Itens $itens)
+    private $token;
+
+    public function __construct(Token $token)
     {
-        $this->itens = $itens;
+        $this->token = $token;
     }
+
 
     public function index()
     {
@@ -113,23 +116,49 @@ class ItensController extends Controller
 
     public function gerar(Request $request)
     {
+        //GERA O TOKEN CM 32 CARACTERES
         $token = strval(bin2hex(random_bytes(32)));
+        //RECEBE OS DADOS PASSADOS
         $dados = $request->all();
 
-
-        $item = Token::find(1);
-        $token = $item->tokens;
-
-        return $token;
-        exit;
-
-        if (filter_var($dados['email'], FILTER_VALIDATE_EMAIL)){
-            $dados['token'] = $token;
-
-            return Token::create($dados);
+        //VERIFICA E TESTA SE O TOKEN GERADO JÁ EXISTE NO BANCO DE DADOS
+        $tokenDisponivel = Token::where('token', '=', "{$token}")->get();
+        //CASO A CHAVE JA EXISTA, ELE GERA UMA NOVA
+        if(isset($tokenDisponivel[0]->token)){
+            $token = strval(bin2hex(random_bytes(32)));
         }
         else{
-            return 'email invalido';
+            //CASO NÃO EXISTA ELE FAZ A VALIDAÇÃO DE EMAIL PASSADO NO PARAMETRO TEM UM FORMATO VALIDO.
+            if (filter_var($dados['email'], FILTER_VALIDATE_EMAIL)) {
+
+                //VALIDA SE O NOME PASSADO JÁ EXISTE NO BANCO DE DADOS
+                $nomeDisponivel = Token::where('nome', '=', "{$request->nome}")->get();
+                if (isset($nomeDisponivel[0]->nome)) {
+
+                    return json_encode('nome indisponivel');
+                }
+                //CASO NÃO EXISTA ELE VALIDA SE O EMAIL JÁ EXISTE NO BANDO.
+                else {
+
+                    $emailDisponivel = Token::where('email', '=', "{$request->email}")->get();
+                    if (isset($emailDisponivel[0]->email)) {
+
+                        return json_encode('E-mail indisponivel');
+                    } else {
+
+                        //CASO NÃO EXISTA, ADICIONA O TOKEN JUNTO DO ARRAY E SALVA OS DADOS NA TABELA TOKENS NO BANCO.
+                        $dados['token'] = $token;
+                        Token::create($dados);
+
+                        //RETORNA O TOKEN
+                        return json_encode('Token gerado com sucesso TOKEN: ' . $token) ;
+                    }
+                }
+
+            } else {
+
+                return 'Formato de e-mail invalido';
+            }
         }
 
     }
