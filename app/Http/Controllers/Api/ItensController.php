@@ -28,7 +28,7 @@ class ItensController extends Controller
 
     public function index()
     {
-        return $this->itens->paginate(10);
+        return $this->token->paginate(10);
     }
 
     /**
@@ -39,7 +39,8 @@ class ItensController extends Controller
         $chave = $request->header()['chave'][0];
         $dados = $request->all();
 
-        var_dump($chave . ' Dados ', $dados); exit();
+        var_dump($chave . ' Dados ', $dados);
+        exit();
 
         $data = $request->all();
         return $this->itens->create($request->all());
@@ -48,15 +49,18 @@ class ItensController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show($token)
     {
-        if ($item = Itens::find($id)) {
 
-            $item = Itens::find($id);
-            return $item;
-        } else {
-            return json_encode($item);
-        }
+        // if ($item = Itens::find($id)) {
+
+            //     $item = Itens::find($id);
+            //     return $item;
+            // } else {
+                //     return json_encode($item);
+                // }
+        // return $this->token->where('token', "$token")->get();
+        return $this->token->where('token', "$token")->with('itens')->get();
     }
 
     /**
@@ -113,7 +117,7 @@ class ItensController extends Controller
 
         return $item;
     }
-
+    //========================================== TOKEN ===================================================================
     public function gerar(Request $request)
     {
         //GERA O TOKEN CM 32 CARACTERES
@@ -124,10 +128,9 @@ class ItensController extends Controller
         //VERIFICA E TESTA SE O TOKEN GERADO JÁ EXISTE NO BANCO DE DADOS
         $tokenDisponivel = Token::where('token', '=', "{$token}")->get();
         //CASO A CHAVE JA EXISTA, ELE GERA UMA NOVA
-        if(isset($tokenDisponivel[0]->token)){
+        if (isset($tokenDisponivel[0]->token)) {
             $token = strval(bin2hex(random_bytes(32)));
-        }
-        else{
+        } else {
             //CASO NÃO EXISTA ELE FAZ A VALIDAÇÃO DE EMAIL PASSADO NO PARAMETRO TEM UM FORMATO VALIDO.
             if (filter_var($dados['email'], FILTER_VALIDATE_EMAIL)) {
 
@@ -151,18 +154,42 @@ class ItensController extends Controller
                         Token::create($dados);
 
                         //RETORNA O TOKEN
-                        return json_encode('Token gerado com sucesso TOKEN: ' . $token) ;
+                        return json_encode('Token gerado com sucesso TOKEN: ' . $token);
                     }
                 }
-
             } else {
 
                 return 'Formato de e-mail invalido';
             }
         }
-
     }
 
+    public function buscar(Request $request)
+    {
 
+        if (filter_var($request['email'], FILTER_VALIDATE_EMAIL)) {
 
+            $nomeValida = Token::where('nome', 'LIKE', "{$request->nome}")->get();
+            $emailValida = Token::where('email', 'LIKE', "{$request->email}")->get();
+
+            if(isset($nomeValida[0]->nome)){
+
+                if(isset($emailValida[0]->email)){
+
+                    return $emailValida[0];
+                }
+                else{
+                    return json_encode('E-mail não encontrado');
+                }
+            }
+            else{
+                return json_encode('Nome não encontrado');
+            }
+
+        }
+        else{
+            return json_encode('Formato de e-mail invalido');
+        }
+
+    }
 }
