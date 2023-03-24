@@ -18,9 +18,9 @@ class TokenFactory extends Factory
     {
         return [
 
-            'token' => $this->faker->words(1, true),
+            'token' => strval(bin2hex(random_bytes(32))),
             'nome' => $this->faker->words(1, true),
-            'email' => $this->faker->words(1, true),
+            'email' => $this->faker->unique()->safeEmail,
         ];
     }
 }

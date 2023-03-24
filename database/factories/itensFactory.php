@@ -19,8 +19,8 @@ class itensFactory extends Factory
         return [
 
             'codigo' => $this->faker->randomNumber(5),
-            'nome' => $this->faker->words(3, true),
-            'tipo' => $this->faker->words(3, true),
+            'nome' => $this->faker->name,
+            'tipo' => $this->faker->tipo,
             'valor-un-compra' => $this->faker->randomFloat(2,3,300),
             'valor-un-venda' => $this->faker->randomFloat(2, 3, 300),
             'estoque-gerado' => $this->faker->randomNumber(7),
