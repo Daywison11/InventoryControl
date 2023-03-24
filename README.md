@@ -1,18 +1,27 @@
 <h1>Endpoints</h1>
 
-<h3><strong>GET</strong> api/gerar-token</h3>
+<h3><strong>POST</strong> api/gerar-token</h3>
 <p>Gera o token que sera a indentidade do usuario.</p>
 <h4>Parametros obrigatorios</h4>
 <ul>
-<li>nome</li>
-<li>email</li>
+<li>nome*</li>
+<li>email*</li>
+</ul>
+
+<h3><strong>POST</strong> api/token/buscar</h3>
+<p>Busca o token com base no Nome e Email cadastrado</p>
+<h4>Parametros obrigatorios</h4>
+<ul>
+<li>nome*</li>
+<li>email*</li>
 </ul>
 
 <h3><strong>GET</strong> api/itens</h3>
 <p>Retorna todos os itens</p>
 
-<h3><strong>GET</strong> api/itens/id</h3>
-<p>Retorna um item especifico pelo id</p>
+<h3><strong>GET</strong> api/itens/{token}</h3>
+<p>Retorna todos os itens vinculados com o token</p>
+
 
 <h3><strong>POST</strong> api/itens</h3>
 <p>Adicionando itens no banco de dados</p>
