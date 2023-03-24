@@ -33,3 +33,5 @@ Route::POST('/itens/tiposearch', [ItensController::class, 'searchTipo'])->name('
 Route::POST('/itens/codigosearch', [ItensController::class, 'searchCodigo'])->name('search-Codigo');
 
 Route::POST('/gerar-token', [ItensController::class, 'gerar'])->name('gerar');
+Route::POST('/token/buscar', [ItensController::class, 'buscar'])->name('buscar');
+
