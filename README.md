@@ -21,7 +21,7 @@
 
 <h3><strong>GET</strong> api/itens/{token}</h3>
 <p>Retorna todos os itens vinculados com o token</p>
-
+ 
 
 <h3><strong>POST</strong> api/itens</h3>
 <p>Adicionando itens no banco de dados</p>
