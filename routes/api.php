@@ -18,7 +18,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::GET('/gerar-token', [ItensController::class, 'gerartoken'])->name('Gerar-Token');
+// Route::GET('/gerar-token', [ItensController::class, 'gerartoken'])->name('Gerar-Token');
 
 
 // ITENS
@@ -27,7 +27,8 @@ Route::GET('/gerar-token', [ItensController::class, 'gerartoken'])->name('Gerar-
 // PUT / Itens / :id
 // PATCH / Itens / :id
 // DEKETE / Itens / :id
-Route::apiResource('itens', \App\Http\Controllers\Api\ItensController::class);
+Route::apiResource('token.itens', \App\Http\Controllers\Api\ItensController::class);
+
 Route::POST('/itens/nomesearch', [ItensController::class, 'searchName'])->name('search-Nome');
 Route::POST('/itens/tiposearch', [ItensController::class, 'searchTipo'])->name('search-Tipo');
 Route::POST('/itens/codigosearch', [ItensController::class, 'searchCodigo'])->name('search-Codigo');

@@ -26,41 +26,59 @@ class ItensController extends Controller
     }
 
 
-    public function index()
+    public function index($token)
     {
-        return $this->token->paginate(10);
+
+        return $this->token->where('token', "$token")->with('itens')->get();
+
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, $token)
     {
-        $chave = $request->header()['chave'][0];
         $dados = $request->all();
 
-        var_dump($chave . ' Dados ', $dados);
-        exit();
+        $token = Token::where('token', $token)->first();
 
-        $data = $request->all();
-        return $this->itens->create($request->all());
+        if (!$token) {
+            return response()->json(['message' => 'Token não encontrado'], 404);
+        }
+
+        do {
+            $codigo = rand(10000, 99999);
+        } while ($token->itens()->where('codigo', $codigo)->exists());
+
+        $dados['codigo'] = $codigo;
+
+        $item = $token->itens()->create($dados);
+
+        return response()->json($item);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($token)
+    public function show($token,$id)
     {
+        $token = $this->token->where('token', $token)->first();
 
-        // if ($item = Itens::find($id)) {
+        if (!$token) {
 
-            //     $item = Itens::find($id);
-            //     return $item;
-            // } else {
-                //     return json_encode($item);
-                // }
-        // return $this->token->where('token', "$token")->get();
-        return $this->token->where('token', "$token")->with('itens')->get();
+            $mensagem = ['message' => 'Token não encontrado'];
+            return response()->json($mensagem, 404);
+        }
+
+        $item = $token->itens()->where('id', $id)->first();
+
+        if (!$item) {
+            $mensagem = ['message' => 'Item não encontrado'];
+            return response()->json($mensagem, 404);
+        }
+
+        return $item;
+
     }
 
     /**
@@ -138,7 +156,8 @@ class ItensController extends Controller
                 $nomeDisponivel = Token::where('nome', '=', "{$request->nome}")->get();
                 if (isset($nomeDisponivel[0]->nome)) {
 
-                    return json_encode('nome indisponivel');
+                    $mensagem = ['message' => 'nome indisponivel'];
+                    return response()->json($mensagem);
                 }
                 //CASO NÃO EXISTA ELE VALIDA SE O EMAIL JÁ EXISTE NO BANDO.
                 else {
@@ -146,7 +165,9 @@ class ItensController extends Controller
                     $emailDisponivel = Token::where('email', '=', "{$request->email}")->get();
                     if (isset($emailDisponivel[0]->email)) {
 
-                        return json_encode('E-mail indisponivel');
+                        $mensagem = ['message' => 'E-mail indisponivel'];
+                        return response()->json($mensagem);
+
                     } else {
 
                         //CASO NÃO EXISTA, ADICIONA O TOKEN JUNTO DO ARRAY E SALVA OS DADOS NA TABELA TOKENS NO BANCO.
@@ -154,7 +175,9 @@ class ItensController extends Controller
                         Token::create($dados);
 
                         //RETORNA O TOKEN
-                        return json_encode('Token gerado com sucesso TOKEN: ' . $token);
+                        $mensagem = ['message' => 'Token gerado com sucesso TOKEN', 'token' => $token];
+
+                        return response()->json($mensagem, 201);
                     }
                 }
             } else {
@@ -179,16 +202,22 @@ class ItensController extends Controller
                     return $emailValida[0];
                 }
                 else{
-                    return json_encode('E-mail não encontrado');
+                    $mensagem = ['message' => 'E-mail não encontrado'];
+
+                    return response()->json($mensagem, 404);
                 }
             }
             else{
-                return json_encode('Nome não encontrado');
+
+                $mensagem = ['message' => 'Nome não encontrado'];
+                return response()->json($mensagem, 404);
             }
 
         }
         else{
-            return json_encode('Formato de e-mail invalido');
+            $mensagem = ['message' => 'Email invalido'];
+
+            return  response()->json($mensagem);
         }
 
     }

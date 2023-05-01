@@ -16,18 +16,16 @@
 <li>email*</li>
 </ul>
 
-<h3><strong>GET</strong> api/itens</h3>
-<p>Retorna todos os itens</p>
-
-<h3><strong>GET</strong> api/itens/{token}</h3>
+<h3><strong>GET</strong>api/token/{token}/itens</h3>
 <p>Retorna todos os itens vinculados com o token</p>
- 
 
+<h3><strong>GET</strong>api/token/{token}/itens/{id}</h3>
+<p>Retorna o itens especifico vinculados com o token</p>
+ 
 <h3><strong>POST</strong> api/itens</h3>
 <p>Adicionando itens no banco de dados</p>
 <h4>Parametros</h4>
 <ul>
-<li>codigo</li>
 <li>nome</li>
 <li>tipo</li>
 <li>valor-un-compra</li>
@@ -38,6 +36,7 @@
 <li>saidas</li>
 <li>perca</li>
 </ul>
+
 <p>EX: {"nome":"nome do produto"}</p>
 
 <h3><strong>PUT</strong> api/itens/id</h3>
