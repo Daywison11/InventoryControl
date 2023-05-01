@@ -1,4 +1,5 @@
 <h1>Endpoints</h1>
+<h2>*OBS* Todas as chamadas devem conter o token</h2>
 
 <h3><strong>POST</strong> api/gerar-token</h3>
 <p>Gera o token que sera a indentidade do usuario.</p>
